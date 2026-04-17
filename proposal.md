@@ -8,8 +8,8 @@
 - Piano Roll Grid Setup
 - tracks list
 - clean gui
-- track organizer
-- 
+- audio mixer controls
+
 ## Nice to Have
 - import/export files
 - diferent time signatures
@@ -19,4 +19,4 @@
 - customzable keyboard shortcuts
 - customizable workspace -- app drawer
 - fancy synths 
--
+- dice roll tab
