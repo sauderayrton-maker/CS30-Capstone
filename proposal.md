@@ -8,7 +8,7 @@ For my CS30 project, I’m building a user-friendly music-making app that lets p
 - Base Sounds  
 - Piano Roll Grid Setup
 - tracks list
-- clean gui
+- clean gui there will be no 90 degree corners exclusively rounded to 20px
 - audio mixer controls
 
 ## Nice to Have
@@ -19,5 +19,6 @@ For my CS30 project, I’m building a user-friendly music-making app that lets p
 - more themes maybe
 - customzable keyboard shortcuts
 - customizable workspace -- app drawer
+- workspace tabs 
 - fancy synths 
 - dice roll tab
