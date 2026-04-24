@@ -19,8 +19,9 @@ const INACTIVE_NOTE = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  noteW = width / 32;
-  noteH = 16;
+  noteW = width / 16;
+  noteH = height / 8;
+  size = (width / height) * 50;
   rows = height / noteH;
   cols = width / noteW;
   makeGrid(cols, rows);
@@ -40,7 +41,7 @@ function drawPianoRoll() {
         fill(COLOR5);
       }
       stroke(COLOR1);
-      square(x * noteW, y * noteH, noteW, CORNERRADIUS);
+      square(x * noteW, y * noteH, size, CORNERRADIUS);
     }
   }
 }
@@ -66,3 +67,11 @@ function mouseClicked() {
   let y = floor(mouseY / noteH);
   toggleNote(x, y);
 }
+
+function keyPressed() {
+  if (key === "s") {
+    saveGrid();
+  }
+}
+
+function saveGrid() {}
