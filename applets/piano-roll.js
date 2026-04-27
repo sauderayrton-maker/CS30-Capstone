@@ -92,6 +92,9 @@ function keyPressed() {
   if (key === " ") {
     playing = !playing;
   }
+  if (key === "c" || key === "C") {
+    makeGrid(cols, rows);
+  }
   if (key === "1") {
     noteSelector = ACTIVE_NOTE;
   }
