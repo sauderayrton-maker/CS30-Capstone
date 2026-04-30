@@ -1,8 +1,63 @@
-html, body {
-  margin: 0;
-  padding: 0;
+body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    /* Using the BG constant value for the background */
+    background-color: #0a0a0f;
+    color: #c8ccff;
+    min-height: 100vh;
+    padding-top: 100px;
+}
+
+.navbar {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 1100px;
+    /* Using SURFACE and CELL_BG tones for the glass effect */
+    background: rgba(26, 26, 46, 0.7);
+    border: 1px solid #23243a;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 999;
+}
+
+.navigation {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+}
+
+.navigation a {
+    color: #c8ccff; /* ACTIVE_NOTE_COLOR */
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.navigation a:hover {
+    color: #e8eaff; /* ACTIVE_NOTE_BRIGHT */
+    text-shadow: 0 0 8px rgba(200, 204, 255, 0.6);
+}
+
+.content {
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 canvas {
-  display: block;
+    display: block;
+    border-radius: 20px; /* Matching CORNERRADIUS */
+    background-color: #111118; /* SURFACE */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
 }

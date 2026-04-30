@@ -98,6 +98,7 @@ function keyPressed() {
   if (key === "l" || key === "L") {
     loadGrid();
   }
+
   if (key === " ") {
     playing = !playing;
   }
