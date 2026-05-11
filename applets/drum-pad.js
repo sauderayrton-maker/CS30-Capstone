@@ -24,6 +24,16 @@ let playing = false;
 let noteSelector = ACTIVE_NOTE;
 let bpm = 120;
 let currentNote = 0;
+let kick;
+let snare;
+let openHat, closedHat;
+
+function preload() {
+  kick = loadSound("assets/drums/jetson.wav");
+  snare = loadSound("assets/drums/rio - guts 808.wav");
+  openHat = loadSound("assets/drums/hh open.mp3");
+  closedHat = loadSound("assets/drums/hh closed.mp3");
+}
 
 //----- Setup -----//
 function setup() {
@@ -46,7 +56,7 @@ function draw() {
 }
 
 //----- Timing -----//
-function play() {
+function start() {
   console.log("ts playing now");
 }
 
@@ -104,6 +114,18 @@ function keyPressed() {
   }
   if (key === "c" || key === "C") {
     makeGrid(cols, rows);
+  }
+  if (key === "1") {
+    kick.play();
+  }
+  if (key === "2") {
+    snare.play();
+  }
+  if (key === "3") {
+    closedHat.play();
+  }
+  if (key === "4") {
+    openHat.play();
   }
 }
 
