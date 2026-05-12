@@ -92,7 +92,7 @@ function preload() {
 //----- Setup -----//
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  textFont("monospace");
+  textFont("opensans");
   cols = 16;
   rows = 8;
   noteW = (width - LABEL_W - PAD * 2 - GAP * (cols - 1) - BEAT_GAP * 3) / cols;
@@ -110,6 +110,9 @@ function draw() {
     start();
     drawPlayhead();
   }
+  textSize(30);
+  textAlign(CENTER, CENTER);
+  text(getFrameRate(), 50, 50);
 }
 
 //----- Timing -----//
