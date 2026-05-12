@@ -20,19 +20,27 @@ let noteW;
 let noteH;
 let size;
 let beatsArray = [];
-let playing = false;
+let isPlaying = false;
 let noteSelector = ACTIVE_NOTE;
 let bpm = 120;
+let fps = 60;
 let currentNote = 0;
+let nextNote = 0;
 let kick;
 let snare;
 let openHat, closedHat;
+let crash, clap, cowBell;
+let tom;
 
 function preload() {
-  kick = loadSound("assets/drums/jetson.wav");
-  snare = loadSound("assets/drums/rio - guts 808.wav");
-  openHat = loadSound("assets/drums/hh open.mp3");
-  closedHat = loadSound("assets/drums/hh closed.mp3");
+  kick = loadSound("assets/drums/kick-808.wav");
+  snare = loadSound("assets/drums/snare-lofi01.wav");
+  openHat = loadSound("assets/drums/openhat-slick.wav");
+  closedHat = loadSound("assets/drums/hihat-808.wav");
+  crash = loadSound("assets/drums/crash-808.wav");
+  clap = loadSound("assets/drums/clap-808.wav");
+  cowBell = loadSound("assets/drums/cowbell-808.wav");
+  tom = loadSound("assets/drums/tom-808.wav");
 }
 
 //----- Setup -----//
@@ -50,21 +58,57 @@ function setup() {
 function draw() {
   background(BG);
   drawDrumPad();
-  if (playing) {
-    play();
+  if (isPlaying) {
+    start();
   }
 }
 
 //----- Timing -----//
 function start() {
-  console.log("ts playing now");
+  let interval = ((fps / bpm) * 1000) / 2;
+  if (millis() >= nextNote) {
+    lightColumn(currentNote);
+    currentNote = (currentNote + 1) % cols;
+    nextNote = millis() + interval;
+  }
+}
+
+function lightColumn(col) {
+  if (beatsArray[0][col] === ACTIVE_NOTE) {
+    kick.play();
+  }
+  if (beatsArray[1][col] === ACTIVE_NOTE) {
+    snare.play();
+  }
+  if (beatsArray[2][col] === ACTIVE_NOTE) {
+    closedHat.play();
+  }
+  if (beatsArray[3][col] === ACTIVE_NOTE) {
+    openHat.play();
+  }
+  if (beatsArray[4][col] === ACTIVE_NOTE) {
+    tom.play();
+  }
+  if (beatsArray[5][col] === ACTIVE_NOTE) {
+    clap.play();
+  }
+  if (beatsArray[6][col] === ACTIVE_NOTE) {
+    cowBell.play();
+  }
+  if (beatsArray[7][col] === ACTIVE_NOTE) {
+    crash.play();
+  }
 }
 
 //----- Draws the Grid and Fills Colors -----//
 function drawDrumPad() {
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
-      if (beatsArray[y][x] === ACTIVE_NOTE) {
+      if (isPlaying && x === currentNote && beatsArray[y][x] === ACTIVE_NOTE) {
+        fill(ACTIVE_NOTE_BRIGHT);
+      } else if (isPlaying && x === currentNote) {
+        fill(PLAYHEAD_COLOR);
+      } else if (beatsArray[y][x] === ACTIVE_NOTE) {
         fill(ACTIVE_NOTE_COLOR);
       } else {
         fill(INACTIVE_DRUM_COLOR);
@@ -110,7 +154,11 @@ function keyPressed() {
   }
 
   if (key === " ") {
-    playing = !playing;
+    isPlaying = !isPlaying;
+    if (isPlaying) {
+      currentNote = 0;
+      nextNote = millis();
+    }
   }
   if (key === "c" || key === "C") {
     makeGrid(cols, rows);
