@@ -1,36 +1,82 @@
 //----- Constants -----//
-const CORNERRADIUS = 20;
-const GRID_STROKE = "#181824";
-const SURFACE = "#111118";
-const CELL_BG = "#1a1a2e";
-const PLAYHEAD_COLOR = "#2d3561";
-const INACTIVE_DRUM_COLOR = "#23243a";
-const ACTIVE_NOTE_COLOR = "#c8ccff";
-const ACTIVE_NOTE_BRIGHT = "#e8eaff";
-const BG = "#0a0a0f";
+const CORNERRADIUS = 8;
+const SURFACE = "#141210";
+const PLAYHEAD_COLOR = "#f5d48a";
+const PLAYHEAD_SHADOW = "rgba(255, 220, 100, 0.05)"; // Replaced #ffffff0e equivalent
+const INACTIVE_DRUM_COLOR = "#1e1a14";
+const INACTIVE_DRUM_ALT = "#1a1710";
+const INACTIVE_COLUMN_HIGHLIGHT = "#252015";
+const HEADER_TEXT_ACTIVE = "#e8a94a";
+const HEADER_TEXT_INACTIVE = "#2e2820";
+const ACTIVE_NOTE_COLOR = "#e8a94a";
+const ACTIVE_NOTE_BRIGHT = "#f5d48a";
+const BG = "#0c0a08";
+const COLOR_KICK = "#e8a94a";
+const COLOR_SNARE = "#e8704a";
+const COLOR_CLAP = "#e8c44a";
+const COLOR_TOM = "#e84a7a";
+const COLOR_HHCL = "#a4e84a";
+const COLOR_HHOP = "#4ae8a4";
+const COLOR_COWBELL = "#4ab4e8";
+const COLOR_CRASH = "#b44ae8";
+const BORDER_KICK = "#3d2a0a";
+const BORDER_SNARE = "#3d1a0a";
+const BORDER_CLAP = "#3d320a";
+const BORDER_TOM = "#3d0a1e";
+const BORDER_HHCL = "#283d0a";
+const BORDER_HHOP = "#0a3d28";
+const BORDER_COWBELL = "#0a2c3d";
+const BORDER_CRASH = "#2c0a3d";
 const ACTIVE_NOTE = 1;
 const INACTIVE_DRUM = 0;
-const HALF_NOTE = 2;
-const HOLE_NOTE = 4;
+const LABEL_W = 88;
+const HEADER_H = 36;
+const PAD = 8;
+const GAP = 4;
+const BEAT_GAP = 10;
+let labels = [
+  "KICK",
+  "SNARE",
+  "CLAP",
+  "TOM",
+  "HH CL",
+  "HH OP",
+  "COWBELL",
+  "CRASH",
+];
+let colors = [
+  COLOR_KICK,
+  COLOR_SNARE,
+  COLOR_CLAP,
+  COLOR_TOM,
+  COLOR_HHCL,
+  COLOR_HHOP,
+  COLOR_COWBELL,
+  COLOR_CRASH,
+];
+let borders = [
+  BORDER_KICK,
+  BORDER_SNARE,
+  BORDER_CLAP,
+  BORDER_TOM,
+  BORDER_HHCL,
+  BORDER_HHOP,
+  BORDER_COWBELL,
+  BORDER_CRASH,
+];
 
 //----- Variables -----//
 let rows;
 let cols;
 let noteW;
 let noteH;
-let size;
 let beatsArray = [];
 let isPlaying = false;
-let noteSelector = ACTIVE_NOTE;
 let bpm = 120;
-let fps = 60;
 let currentNote = 0;
 let nextNote = 0;
-let kick;
-let snare;
-let openHat, closedHat;
-let crash, clap, cowBell;
-let tom;
+let kick, snare, openHat, closedHat;
+let crash, clap, cowBell, tom;
 
 function preload() {
   kick = loadSound("assets/drums/kick-808.wav");
@@ -46,26 +92,29 @@ function preload() {
 //----- Setup -----//
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  noteW = width / 8;
-  noteH = height / 8;
-  size = (width / height) * 50;
-  rows = height / noteH;
-  cols = width / noteW;
+  textFont("monospace");
+  cols = 16;
+  rows = 8;
+  noteW = (width - LABEL_W - PAD * 2 - GAP * (cols - 1) - BEAT_GAP * 3) / cols;
+  noteH = (height - HEADER_H - PAD * 2 - GAP * (rows - 1)) / rows;
   makeGrid(cols, rows);
 }
 
 //----- Making it happen -----//
 function draw() {
   background(BG);
+  drawHeader();
+  drawLabels();
   drawDrumPad();
   if (isPlaying) {
     start();
+    drawPlayhead();
   }
 }
 
 //----- Timing -----//
 function start() {
-  let interval = ((fps / bpm) * 1000) / 2;
+  let interval = ((60 / bpm) * 1000) / 4;
   if (millis() >= nextNote) {
     lightColumn(currentNote);
     currentNote = (currentNote + 1) % cols;
@@ -81,16 +130,16 @@ function lightColumn(col) {
     snare.play();
   }
   if (beatsArray[2][col] === ACTIVE_NOTE) {
-    closedHat.play();
+    clap.play();
   }
   if (beatsArray[3][col] === ACTIVE_NOTE) {
-    openHat.play();
-  }
-  if (beatsArray[4][col] === ACTIVE_NOTE) {
     tom.play();
   }
+  if (beatsArray[4][col] === ACTIVE_NOTE) {
+    closedHat.play();
+  }
   if (beatsArray[5][col] === ACTIVE_NOTE) {
-    clap.play();
+    openHat.play();
   }
   if (beatsArray[6][col] === ACTIVE_NOTE) {
     cowBell.play();
@@ -100,26 +149,102 @@ function lightColumn(col) {
   }
 }
 
-//----- Draws the Grid and Fills Colors -----//
-function drawDrumPad() {
-  for (let y = 0; y < rows; y++) {
-    for (let x = 0; x < cols; x++) {
-      if (isPlaying && x === currentNote && beatsArray[y][x] === ACTIVE_NOTE) {
-        fill(ACTIVE_NOTE_BRIGHT);
-      } else if (isPlaying && x === currentNote) {
-        fill(PLAYHEAD_COLOR);
-      } else if (beatsArray[y][x] === ACTIVE_NOTE) {
-        fill(ACTIVE_NOTE_COLOR);
-      } else {
-        fill(INACTIVE_DRUM_COLOR);
-      }
-      stroke(GRID_STROKE);
-      rect(x * noteW, y * noteH, noteW, noteH, CORNERRADIUS);
+//----- Header -----//
+function drawHeader() {
+  noStroke();
+  fill(SURFACE);
+  rect(0, 0, width, HEADER_H);
+  fill(HEADER_TEXT_ACTIVE);
+  textSize(11);
+  textAlign(LEFT, CENTER);
+  text(bpm + " BPM", PAD + 6, HEADER_H / 2);
+  textAlign(CENTER, CENTER);
+  for (let x = 0; x < cols; x++) {
+    let px = getNoteX(x) + noteW / 2;
+    if (x % 4 === 0) {
+      fill(HEADER_TEXT_ACTIVE);
+      textSize(11);
+      text(floor(x / 4) + 1, px, HEADER_H / 2);
+    } else {
+      fill(HEADER_TEXT_INACTIVE);
+      textSize(9);
+      text(x + 1, px, HEADER_H / 2);
     }
   }
 }
 
-//----- Creats Grid Array-----//
+//----- Labels -----//
+function drawLabels() {
+  for (let y = 0; y < rows; y++) {
+    let py = getNoteY(y);
+    noStroke();
+    fill(SURFACE);
+    rect(PAD, py, LABEL_W - PAD * 2, noteH, CORNERRADIUS);
+    fill(colors[y]);
+    rect(PAD, py, 3, noteH, CORNERRADIUS, 0, 0, CORNERRADIUS);
+    fill(colors[y]);
+    textSize(9);
+    textAlign(LEFT, CENTER);
+    text(labels[y], PAD + 10, py + noteH / 2);
+  }
+}
+
+//----- Draws the Grid and Fills Colors -----//
+function drawDrumPad() {
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      let px = getNoteX(x);
+      let py = getNoteY(y);
+      if (isPlaying && x === currentNote && beatsArray[y][x] === ACTIVE_NOTE) {
+        fill(ACTIVE_NOTE_BRIGHT);
+      } else if (isPlaying && x === currentNote) {
+        fill(INACTIVE_COLUMN_HIGHLIGHT);
+      } else if (beatsArray[y][x] === ACTIVE_NOTE) {
+        fill(colors[y]);
+      } else {
+        fill(floor(x / 4) % 2 === 0 ? INACTIVE_DRUM_COLOR : INACTIVE_DRUM_ALT);
+      }
+      if (
+        beatsArray[y][x] === ACTIVE_NOTE &&
+        !(isPlaying && x === currentNote)
+      ) {
+        stroke(borders[y]);
+        strokeWeight(1);
+      } else {
+        noStroke();
+      }
+      rect(px, py, noteW, noteH, CORNERRADIUS);
+    }
+  }
+}
+
+//----- Playhead -----//
+function drawPlayhead() {
+  let px = getNoteX(currentNote);
+  noStroke();
+  fill(PLAYHEAD_SHADOW);
+  rect(px, HEADER_H, noteW, height - HEADER_H);
+  fill(PLAYHEAD_COLOR);
+  triangle(
+    px,
+    HEADER_H - 1,
+    px + noteW,
+    HEADER_H - 1,
+    px + noteW / 2,
+    HEADER_H + 8,
+  );
+}
+
+//----- Note Position Helpers -----//
+function getNoteX(x) {
+  return LABEL_W + PAD + x * (noteW + GAP) + floor(x / 4) * (BEAT_GAP - GAP);
+}
+
+function getNoteY(y) {
+  return HEADER_H + PAD + y * (noteH + GAP);
+}
+
+//----- Creates Grid Array -----//
 function makeGrid(cols, rows) {
   for (let y = 0; y < rows; y++) {
     beatsArray[y] = [];
@@ -140,9 +265,24 @@ function toggleNote(x, y) {
 
 //----- Keybinds -----//
 function mouseClicked() {
-  let x = floor(mouseX / noteW);
-  let y = floor(mouseY / noteH);
-  toggleNote(x, y);
+  if (mouseY < HEADER_H || mouseX < LABEL_W) {
+    return;
+  }
+  for (let x = 0; x < cols; x++) {
+    for (let y = 0; y < rows; y++) {
+      let px = getNoteX(x);
+      let py = getNoteY(y);
+      if (
+        mouseX >= px &&
+        mouseX < px + noteW &&
+        mouseY >= py &&
+        mouseY < py + noteH
+      ) {
+        toggleNote(x, y);
+        return;
+      }
+    }
+  }
 }
 
 function keyPressed() {
@@ -152,7 +292,9 @@ function keyPressed() {
   if (key === "l" || key === "L") {
     loadGrid();
   }
-
+  if (key === "c" || key === "C") {
+    makeGrid(cols, rows);
+  }
   if (key === " ") {
     isPlaying = !isPlaying;
     if (isPlaying) {
@@ -160,20 +302,11 @@ function keyPressed() {
       nextNote = millis();
     }
   }
-  if (key === "c" || key === "C") {
-    makeGrid(cols, rows);
+  if (keyCode === UP_ARROW) {
+    bpm = min(bpm + 5, 300);
   }
-  if (key === "1") {
-    kick.play();
-  }
-  if (key === "2") {
-    snare.play();
-  }
-  if (key === "3") {
-    closedHat.play();
-  }
-  if (key === "4") {
-    openHat.play();
+  if (keyCode === DOWN_ARROW) {
+    bpm = max(bpm - 5, 40);
   }
 }
 
@@ -190,4 +323,9 @@ function loadGrid() {
   }
 }
 
-function keepTime() {}
+//----- Resize -----//
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  noteW = (width - LABEL_W - PAD * 2 - GAP * (cols - 1) - BEAT_GAP * 3) / cols;
+  noteH = (height - HEADER_H - PAD * 2 - GAP * (rows - 1)) / rows;
+}
