@@ -11,11 +11,24 @@ const HEADER_H = 36;
 const PAD = 8;
 const OCTAVES = 5;
 const COLS = 64;
- 
+
 //----- Notes-----//
-let noteNames = ["B","Bb","A","Ab","G","Gb","F","E","Eb","D","Db","C"];
+let noteNames = [
+  "B",
+  "Bb",
+  "A",
+  "Ab",
+  "G",
+  "Gb",
+  "F",
+  "E",
+  "Eb",
+  "D",
+  "Db",
+  "C",
+];
 let blackKeys = [1, 3, 5, 8, 10];
- 
+
 //----- Variables -----//
 let rows = OCTAVES * 12;
 let noteW, noteH;
@@ -24,3 +37,22 @@ let isPlaying = false;
 let bpm = 120;
 let currentBeat = 0;
 let nextBeat = 0;
+
+class Note {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.noteLength;
+    this.
+  }
+}
+
+
+
+
+function loadGrid() {
+  let saved = localStorage.getItem("piano_roll");
+  if (saved) {
+    pianoRollArray = JSON.parse(saved);
+  }
+}

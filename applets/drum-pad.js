@@ -112,7 +112,6 @@ function draw() {
   }
   textSize(30);
   textAlign(CENTER, CENTER);
-  text(getFrameRate(), 50, 50);
 }
 
 //----- Timing -----//
@@ -310,6 +309,30 @@ function keyPressed() {
   }
   if (keyCode === DOWN_ARROW) {
     bpm = max(bpm - 5, 40);
+  }
+  if (key === "h" || key === "H") {
+    closedHat.play();
+  }
+  if (key === "c" || key === "C") {
+    clap.play();
+  }
+  if (key === "o" || key === "O") {
+    openHat.play();
+  }
+  if (key === "k" || key === "K") {
+    kick.play();
+  }
+  if (key === "r" || key === "R") {
+    crash.play();
+  }
+  if (key === "t" || key === "T") {
+    tom.play();
+  }
+  if (key === "s" || key === "S") {
+    snare.play();
+  }
+  if (key === "b" || key === "B") {
+    cowBell.play();
   }
 }
 
