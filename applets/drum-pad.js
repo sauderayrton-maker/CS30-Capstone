@@ -1,8 +1,9 @@
 //----- Constants -----//
+//--//  look and feel  //--//
 const CORNERRADIUS = 8;
 const SURFACE = "#141210";
 const PLAYHEAD_COLOR = "#f5d48a";
-const PLAYHEAD_SHADOW = "rgba(255, 220, 100, 0.05)"; // Replaced #ffffff0e equivalent
+const PLAYHEAD_SHADOW = "rgba(255, 220, 100, 0.05)";
 const INACTIVE_DRUM_COLOR = "#1e1a14";
 const INACTIVE_DRUM_ALT = "#1a1710";
 const INACTIVE_COLUMN_HIGHLIGHT = "#252015";
@@ -27,13 +28,18 @@ const BORDER_HHCL = "#283d0a";
 const BORDER_HHOP = "#0a3d28";
 const BORDER_COWBELL = "#0a2c3d";
 const BORDER_CRASH = "#2c0a3d";
-const ACTIVE_NOTE = 1;
-const INACTIVE_DRUM = 0;
 const LABEL_W = 88;
 const HEADER_H = 36;
 const PAD = 8;
 const GAP = 4;
 const BEAT_GAP = 10;
+
+//--//  State  //--//
+const ACTIVE_NOTE = 1;
+const INACTIVE_DRUM = 0;
+
+//----- Variables -----//
+//--//  rows setup  //--//
 let labels = [
   "KICK",
   "SNARE",
@@ -65,7 +71,7 @@ let borders = [
   BORDER_CRASH,
 ];
 
-//----- Variables -----//
+//--//  General  //--//
 let rows;
 let cols;
 let noteW;
@@ -78,6 +84,7 @@ let nextNote = 0;
 let kick, snare, openHat, closedHat;
 let crash, clap, cowBell, tom;
 
+//--//  Preloads  //--//
 function preload() {
   kick = loadSound("assets/drums/kick-808.wav");
   snare = loadSound("assets/drums/snare-lofi01.wav");
@@ -124,31 +131,16 @@ function start() {
   }
 }
 
+//--//  goes through each col and plays sound if note  //--//
 function lightColumn(col) {
-  if (beatsArray[0][col] === ACTIVE_NOTE) {
-    kick.play();
-  }
-  if (beatsArray[1][col] === ACTIVE_NOTE) {
-    snare.play();
-  }
-  if (beatsArray[2][col] === ACTIVE_NOTE) {
-    clap.play();
-  }
-  if (beatsArray[3][col] === ACTIVE_NOTE) {
-    tom.play();
-  }
-  if (beatsArray[4][col] === ACTIVE_NOTE) {
-    closedHat.play();
-  }
-  if (beatsArray[5][col] === ACTIVE_NOTE) {
-    openHat.play();
-  }
-  if (beatsArray[6][col] === ACTIVE_NOTE) {
-    cowBell.play();
-  }
-  if (beatsArray[7][col] === ACTIVE_NOTE) {
-    crash.play();
-  }
+  beatsArray[0][col] === ACTIVE_NOTE && kick.play();
+  beatsArray[1][col] === ACTIVE_NOTE && snare.play();
+  beatsArray[2][col] === ACTIVE_NOTE && clap.play();
+  beatsArray[3][col] === ACTIVE_NOTE && tom.play();
+  beatsArray[4][col] === ACTIVE_NOTE && closedHat.play();
+  beatsArray[5][col] === ACTIVE_NOTE && openHat.play();
+  beatsArray[6][col] === ACTIVE_NOTE && cowBell.play();
+  beatsArray[7][col] === ACTIVE_NOTE && crash.play();
 }
 
 //----- Header -----//
@@ -257,12 +249,17 @@ function makeGrid(cols, rows) {
 }
 
 //----- Updates Grid when Clicked -----//
+// function toggleNote(x, y) {
+//   if (beatsArray[y][x] === ACTIVE_NOTE) {
+//     beatsArray[y][x] = INACTIVE_DRUM;
+//   } else {
+//     beatsArray[y][x] = ACTIVE_NOTE;
+//   }
+// }
+
 function toggleNote(x, y) {
-  if (beatsArray[y][x] === ACTIVE_NOTE) {
-    beatsArray[y][x] = INACTIVE_DRUM;
-  } else {
-    beatsArray[y][x] = ACTIVE_NOTE;
-  }
+  beatsArray[y][x] =
+    beatsArray[y][x] === ACTIVE_NOTE ? INACTIVE_DRUM : ACTIVE_NOTE;
 }
 
 //----- Keybinds -----//
