@@ -123,7 +123,7 @@ function draw() {
 
 //----- Timing -----//
 function start() {
-  let interval = ((60 / bpm) * 1000) / 4;
+  let interval = 60 / bpm * 1000 / 4;
   if (millis() >= nextNote) {
     lightColumn(currentNote);
     currentNote = (currentNote + 1) % cols;
@@ -133,14 +133,30 @@ function start() {
 
 //--//  goes through each col and plays sound if note  //--//
 function lightColumn(col) {
-  beatsArray[0][col] === ACTIVE_NOTE && kick.play();
-  beatsArray[1][col] === ACTIVE_NOTE && snare.play();
-  beatsArray[2][col] === ACTIVE_NOTE && clap.play();
-  beatsArray[3][col] === ACTIVE_NOTE && tom.play();
-  beatsArray[4][col] === ACTIVE_NOTE && closedHat.play();
-  beatsArray[5][col] === ACTIVE_NOTE && openHat.play();
-  beatsArray[6][col] === ACTIVE_NOTE && cowBell.play();
-  beatsArray[7][col] === ACTIVE_NOTE && crash.play();
+  if (beatsArray[0][col] === ACTIVE_NOTE) {
+    kick.play();
+  }
+  if (beatsArray[1][col] === ACTIVE_NOTE) {
+    snare.play();
+  }
+  if (beatsArray[2][col] === ACTIVE_NOTE) {
+    clap.play();
+  }
+  if (beatsArray[3][col] === ACTIVE_NOTE) {
+    tom.play();
+  }
+  if (beatsArray[4][col] === ACTIVE_NOTE) {
+    closedHat.play();
+  }
+  if (beatsArray[5][col] === ACTIVE_NOTE) {
+    openHat.play();
+  }
+  if (beatsArray[6][col] === ACTIVE_NOTE) {
+    cowBell.play();
+  }
+  if (beatsArray[7][col] === ACTIVE_NOTE) {
+    crash.play();
+  }
 }
 
 //----- Header -----//
@@ -159,7 +175,8 @@ function drawHeader() {
       fill(HEADER_TEXT_ACTIVE);
       textSize(11);
       text(floor(x / 4) + 1, px, HEADER_H / 2);
-    } else {
+    } 
+    else {
       fill(HEADER_TEXT_INACTIVE);
       textSize(9);
       text(x + 1, px, HEADER_H / 2);
@@ -191,11 +208,14 @@ function drawDrumPad() {
       let py = getNoteY(y);
       if (isPlaying && x === currentNote && beatsArray[y][x] === ACTIVE_NOTE) {
         fill(ACTIVE_NOTE_BRIGHT);
-      } else if (isPlaying && x === currentNote) {
+      } 
+      else if (isPlaying && x === currentNote) {
         fill(INACTIVE_COLUMN_HIGHLIGHT);
-      } else if (beatsArray[y][x] === ACTIVE_NOTE) {
+      } 
+      else if (beatsArray[y][x] === ACTIVE_NOTE) {
         fill(colors[y]);
-      } else {
+      } 
+      else {
         fill(floor(x / 4) % 2 === 0 ? INACTIVE_DRUM_COLOR : INACTIVE_DRUM_ALT);
       }
       if (
@@ -204,7 +224,8 @@ function drawDrumPad() {
       ) {
         stroke(borders[y]);
         strokeWeight(1);
-      } else {
+      } 
+      else {
         noStroke();
       }
       rect(px, py, noteW, noteH, CORNERRADIUS);
@@ -352,3 +373,5 @@ function windowResized() {
   noteW = (width - LABEL_W - PAD * 2 - GAP * (cols - 1) - BEAT_GAP * 3) / cols;
   noteH = (height - HEADER_H - PAD * 2 - GAP * (rows - 1)) / rows;
 }
+
+// Drum Pad done!!! for now ;)
