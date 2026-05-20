@@ -79,6 +79,8 @@ let noteH;
 let beatsArray = [];
 let isPlaying = false;
 let bpm = 120;
+let recorder;
+let theFile;
 let currentNote = 0;
 let nextNote = 0;
 let kick, snare, openHat, closedHat;
@@ -123,7 +125,7 @@ function draw() {
 
 //----- Timing -----//
 function start() {
-  let interval = 60 / bpm * 1000 / 4;
+  let interval = ((60 / bpm) * 1000) / 4;
   if (millis() >= nextNote) {
     lightColumn(currentNote);
     currentNote = (currentNote + 1) % cols;
@@ -175,8 +177,7 @@ function drawHeader() {
       fill(HEADER_TEXT_ACTIVE);
       textSize(11);
       text(floor(x / 4) + 1, px, HEADER_H / 2);
-    } 
-    else {
+    } else {
       fill(HEADER_TEXT_INACTIVE);
       textSize(9);
       text(x + 1, px, HEADER_H / 2);
@@ -208,14 +209,11 @@ function drawDrumPad() {
       let py = getNoteY(y);
       if (isPlaying && x === currentNote && beatsArray[y][x] === ACTIVE_NOTE) {
         fill(ACTIVE_NOTE_BRIGHT);
-      } 
-      else if (isPlaying && x === currentNote) {
+      } else if (isPlaying && x === currentNote) {
         fill(INACTIVE_COLUMN_HIGHLIGHT);
-      } 
-      else if (beatsArray[y][x] === ACTIVE_NOTE) {
+      } else if (beatsArray[y][x] === ACTIVE_NOTE) {
         fill(colors[y]);
-      } 
-      else {
+      } else {
         fill(floor(x / 4) % 2 === 0 ? INACTIVE_DRUM_COLOR : INACTIVE_DRUM_ALT);
       }
       if (
@@ -224,8 +222,7 @@ function drawDrumPad() {
       ) {
         stroke(borders[y]);
         strokeWeight(1);
-      } 
-      else {
+      } else {
         noStroke();
       }
       rect(px, py, noteW, noteH, CORNERRADIUS);
@@ -309,6 +306,14 @@ function keyPressed() {
   if (key === "s" || key === "S") {
     saveGrid();
   }
+  if (key === "e" || key === "E") {
+    isPlaying = !isPlaying;
+    isRecording = !isRecording;
+    if (isPlaying) {
+      currentNote = 0;
+      nextNote = millis();
+    }
+  }
   if (key === "l" || key === "L") {
     loadGrid();
   }
@@ -328,28 +333,28 @@ function keyPressed() {
   if (keyCode === DOWN_ARROW) {
     bpm = max(bpm - 5, 40);
   }
-  if (key === "h" || key === "H") {
+  if (key === "5") {
     closedHat.play();
   }
-  if (key === "c" || key === "C") {
+  if (key === "3") {
     clap.play();
   }
-  if (key === "o" || key === "O") {
+  if (key === "6" || key === "O") {
     openHat.play();
   }
-  if (key === "k" || key === "K") {
+  if (key === "1") {
     kick.play();
   }
-  if (key === "r" || key === "R") {
+  if (key === "8") {
     crash.play();
   }
-  if (key === "t" || key === "T") {
+  if (key === "4") {
     tom.play();
   }
-  if (key === "s" || key === "S") {
+  if (key === "2") {
     snare.play();
   }
-  if (key === "b" || key === "B") {
+  if (key === "7") {
     cowBell.play();
   }
 }
@@ -366,6 +371,8 @@ function loadGrid() {
     beatsArray = JSON.parse(saved);
   }
 }
+
+function exportSound() {}
 
 //----- Resize -----//
 function windowResized() {
