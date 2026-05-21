@@ -266,15 +266,6 @@ function makeGrid(cols, rows) {
   }
 }
 
-//----- Updates Grid when Clicked -----//
-// function toggleNote(x, y) {
-//   if (beatsArray[y][x] === ACTIVE_NOTE) {
-//     beatsArray[y][x] = INACTIVE_DRUM;
-//   } else {
-//     beatsArray[y][x] = ACTIVE_NOTE;
-//   }
-// }
-
 function toggleNote(x, y) {
   beatsArray[y][x] =
     beatsArray[y][x] === ACTIVE_NOTE ? INACTIVE_DRUM : ACTIVE_NOTE;
@@ -296,7 +287,6 @@ function mouseClicked() {
         mouseY < py + noteH
       ) {
         toggleNote(x, y);
-        return;
       }
     }
   }
