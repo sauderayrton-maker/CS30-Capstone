@@ -42,17 +42,36 @@ class Note {
   constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.noteLength;
-    this.
+    this.noteLength = 1;
+    this.pitch;
+    this.amplitude;
+  }
+
+  display() {
+    rect(this.x, this.y, this.noteLength * noteW, noteH, CORNERRADIUS);
   }
 }
-
-
-
 
 function loadGrid() {
   let saved = localStorage.getItem("piano_roll");
   if (saved) {
     pianoRollArray = JSON.parse(saved);
   }
+}
+
+function mouseClicked() {
+  let theNote = new Note(mouseX, mouseY);
+  notes.push(theNote);
+}
+
+function draw() {
+  for (let theNote of notes) {
+    theNote.display();
+  }
+}
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  noteH = height / rows;
+  notew = width / cols;
 }
