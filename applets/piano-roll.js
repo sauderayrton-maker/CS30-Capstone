@@ -50,6 +50,10 @@ class Note {
   display() {
     rect(this.x, this.y, this.noteLength * noteW, noteH, CORNERRADIUS);
   }
+
+  grow() {
+    this.noteLength++;
+  }
 }
 
 function loadGrid() {
@@ -60,8 +64,7 @@ function loadGrid() {
 }
 
 function mouseClicked() {
-  let theNote = new Note(mouseX, mouseY);
-  notes.push(theNote);
+  notes.push(new Note(mouseX, mouseY));
 }
 
 function draw() {
@@ -73,5 +76,5 @@ function draw() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   noteH = height / rows;
-  notew = width / cols;
+  noteW = width / COLS;
 }
