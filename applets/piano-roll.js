@@ -52,7 +52,10 @@ class Note {
   }
 
   grow() {
-    this.noteLength++;
+    this.noteLength = 2;
+  }
+    shrink() {
+    this.noteLength = 1;
   }
 }
 
@@ -70,8 +73,15 @@ function mouseClicked() {
 function draw() {
   for (let theNote of notes) {
     theNote.display();
+      if (key === '2'){
+    theNote.grow();
+  }
+    if (key === '1'){
+    theNote.shrink();
+  }
   }
 }
+
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
