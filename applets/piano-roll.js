@@ -39,7 +39,7 @@ let noteNames = [
 ];
 let blackKeys = [1, 3, 5, 8, 10];
 
-//----- Grid & State Variables -----//
+//----- Variables -----//
 let rows = OCTAVES * 12;
 let noteW, noteH;
 let notes = [];
@@ -144,6 +144,7 @@ function drawPiano() {
   line(PIANO_W, 0, PIANO_W, height);
   line(0, HEADER_H, PIANO_W, HEADER_H);
 }
+
 //----- Window Resize -----//
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
