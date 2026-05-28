@@ -50,6 +50,23 @@ let nextBeat = 0;
 let waveIndex = 0;
 let hoveredNote = null;
 
+class MakeNote {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.height = noteH;
+    this.width = noteW;
+    this.noteLength = 1;
+  }
+
+  display() {
+    if (this.noteLength > 0) {
+      fill(ACTIVE_COLOR);
+      rect(this.x, this.y, this.width * this.noteLength, this.height);
+    }
+  }
+}
+
 //----- Setup -----//
 function setup() {
   createCanvas(windowWidth, windowHeight);
