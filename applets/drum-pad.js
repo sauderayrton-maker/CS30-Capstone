@@ -85,6 +85,7 @@ let currentNote = 0;
 let nextNote = 0;
 let kick, snare, openHat, closedHat;
 let crash, clap, cowBell, tom;
+let isRecording = false;
 
 //--//  Preloads  //--//
 function preload() {
@@ -107,6 +108,9 @@ function setup() {
   noteW = (width - LABEL_W - PAD * 2 - GAP * (cols - 1) - BEAT_GAP * 3) / cols;
   noteH = (height - HEADER_H - PAD * 2 - GAP * (rows - 1)) / rows;
   makeGrid(cols, rows);
+  recorder = new p5.SoundRecorder();
+  theFile = new p5.SoundFile();
+  recorder.setInput();
 }
 
 //----- Making it happen -----//
@@ -362,13 +366,26 @@ function loadGrid() {
   }
 }
 
-function exportSound() {}
-
 //----- Resize -----//
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
   noteW = (width - LABEL_W - PAD * 2 - GAP * (cols - 1) - BEAT_GAP * 3) / cols;
   noteH = (height - HEADER_H - PAD * 2 - GAP * (rows - 1)) / rows;
+}
+
+function exportSound() {
+  if (!isRecording) {
+    isPlaying = true;
+    currentNote = 0;
+    nextNote = millis();
+    recorder.record(theFile);
+    isRecording = true;
+  } else {
+    recorder.stop();
+    isPlaying = false;
+    isRecording = false;
+    saveSound(theFile, "my-drum-loop.wav");
+  }
 }
 
 // Drum Pad done!!! for now ;)
