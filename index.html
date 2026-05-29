@@ -5,17 +5,20 @@
         <title>Studio</title>
         <script src="https://cdn.jsdelivr.net/npm/p5@1.11.13/lib/p5.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/p5@1.11.13/lib/addons/p5.sound.min.js"></script>
+        <script src="sketch.js"></script>
         <link rel="stylesheet" type="text/css" href="style.css" />
     </head>
     <body>
-        <div class="workspace">
-            <div class="window piano-space">
-                <iframe src="pianoroll.html"></iframe>
+            <div class="workspace">
+                <div class="window piano-space">
+                    <iframe src="pianoroll.html"></iframe>
+                </div>
+                <div class="window drum-space">
+                    <iframe src="drumpad.html"></iframe>
+                </div>
             </div>
 
-            <div class="window drum-space">
-                <iframe src="drumpad.html"></iframe>
-            </div>
-        </div>
-    </body>
+            <script src="sketch.js"></script>
+        </body>
+    </html>
 </html>
