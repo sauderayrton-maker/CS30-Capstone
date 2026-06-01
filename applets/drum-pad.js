@@ -388,4 +388,13 @@ function exportSound() {
   }
 }
 
+//ai
+window.addEventListener("message", (e) => {
+  if (e.data?.type !== "keydown") return;
+  // Fake out p5's key/keyCode globals
+  key = e.data.key;
+  keyCode = e.data.keyCode;
+  keyPressed();
+});
+
 // Drum Pad done!!! for now ;)
