@@ -80,11 +80,12 @@ let beatsArray = [];
 let isPlaying = false;
 let bpm = 120;
 let recorder;
-let theFile;
 let currentNote = 0;
 let nextNote = 0;
 let kick, snare, openHat, closedHat;
 let crash, clap, cowBell, tom;
+let p5Canvas;
+let theFile;
 let isRecording = false;
 
 //--//  Preloads  //--//
@@ -101,7 +102,8 @@ function preload() {
 
 //----- Setup -----//
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  let renderer = createCanvas(windowWidth, windowHeight);
+  p5Canvas = renderer;
   textFont("opensans");
   cols = 16;
   rows = 8;
@@ -301,12 +303,7 @@ function keyPressed() {
     saveGrid();
   }
   if (key === "e" || key === "E") {
-    isPlaying = !isPlaying;
-    isRecording = !isRecording;
-    if (isPlaying) {
-      currentNote = 0;
-      nextNote = millis();
-    }
+    exportSound();
   }
   if (key === "l" || key === "L") {
     loadGrid();
@@ -385,16 +382,26 @@ function exportSound() {
     isPlaying = false;
     isRecording = false;
     saveSound(theFile, "my-drum-loop.wav");
+    console.log(theFile);
   }
 }
 
 //ai
-window.addEventListener("message", (e) => {
-  if (e.data?.type !== "keydown") return;
-  // Fake out p5's key/keyCode globals
-  key = e.data.key;
-  keyCode = e.data.keyCode;
-  keyPressed();
+
+//----- p5.js Focus / Blur handling -----//
+// https://gemini.google.com/app/dea5b331aef3a90e
+window.addEventListener("blur", () => {
+  if (p5Canvas) {
+    p5Canvas.style("filter", "blur(5px) grayscale(20%)");
+    p5Canvas.style("transition", "filter 0.3s ease");
+    p5Canvas.style("pointer-events", "none");
+  }
 });
 
+window.addEventListener("focus", () => {
+  if (p5Canvas) {
+    p5Canvas.style("filter", "none");
+    p5Canvas.style("pointer-events", "auto");
+  }
+});
 // Drum Pad done!!! for now ;)

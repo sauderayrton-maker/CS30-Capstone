@@ -13,7 +13,7 @@ const INACTIVE_SHARP2 = "#131110";
 const INACTIVE_COL_HIGHLIGHT = "#252015";
 const HEADER_TEXT_ACTIVE = "#e8a94a";
 const HEADER_TEXT_INACTIVE = "#2e2820";
-const STROKE = "#1e1a14";
+const STROKES = "#1e1a14";
 const BG = "#0c0a08";
 const PIANO_W = 68;
 const HEADER_H = 36;
@@ -49,6 +49,7 @@ let currentBeat = 0;
 let nextBeat = 0;
 let waveIndex = 0;
 let hoveredNote = null;
+let p5Canvas;
 
 class MakeNote {
   constructor(x, y) {
@@ -69,6 +70,8 @@ class MakeNote {
 
 //----- Setup -----//
 function setup() {
+  let renderer = createCanvas(windowWidth, windowHeight);
+  p5Canvas = renderer; // This captures the true p5.Element object
   createCanvas(windowWidth, windowHeight);
   noteH = (height - HEADER_H) / rows;
   noteW = (width - PIANO_W) / COLS;
@@ -137,7 +140,7 @@ function drawPiano() {
     let octave = OCTAVES + 1 - floor(y / 12);
     let py = HEADER_H + y * noteH;
     fill(isBlack ? "#0e0c0a" : SURFACE);
-    stroke(STROKE);
+    stroke(STROKES);
     strokeWeight(0.5);
     rect(0, py, PIANO_W, noteH);
     if (isBlack) {
@@ -156,7 +159,7 @@ function drawPiano() {
   noStroke();
   fill(SURFACE);
   rect(0, 0, PIANO_W, HEADER_H);
-  stroke(STROKE);
+  stroke(STROKES);
   strokeWeight(1);
   line(PIANO_W, 0, PIANO_W, height);
   line(0, HEADER_H, PIANO_W, HEADER_H);
@@ -170,10 +173,20 @@ function windowResized() {
 }
 
 //ai
-window.addEventListener("message", (e) => {
-  if (e.data?.type !== "keydown") return;
-  // Fake out p5's key/keyCode globals
-  key = e.data.key;
-  keyCode = e.data.keyCode;
-  keyPressed();
+
+//----- p5.js Focus / Blur handling -----//
+// https://gemini.google.com/app/dea5b331aef3a90e
+window.addEventListener("blur", () => {
+  if (p5Canvas) {
+    p5Canvas.style("filter", "blur(5px) grayscale(20%)");
+    p5Canvas.style("transition", "filter 0.3s ease");
+    p5Canvas.style("pointer-events", "none");
+  }
+});
+
+window.addEventListener("focus", () => {
+  if (p5Canvas) {
+    p5Canvas.style("filter", "none");
+    p5Canvas.style("pointer-events", "auto");
+  }
 });

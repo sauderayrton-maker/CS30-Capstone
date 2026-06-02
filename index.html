@@ -4,16 +4,36 @@
         <meta charset="utf-8" />
         <title>Studio</title>
         <script src="https://cdn.jsdelivr.net/npm/p5@1.11.13/lib/p5.js"></script>
-        <script src="focus.js"></script>
         <link rel="stylesheet" type="text/css" href="style.css" />
     </head>
     <body>
         <div class="workspace">
             <div class="window piano-space">
+                <div class="window-title">Piano Roll</div>
                 <iframe src="pianoroll.html"></iframe>
+                <div class="window-bar">
+                    <span class="hint"><kbd>Space</kbd> play/pause</span>
+                    <span class="hint"><kbd>↑</kbd><kbd>↓</kbd> bpm</span>
+                    <span class="hint"><kbd>S</kbd> save</span>
+                    <span class="hint"><kbd>L</kbd> load</span>
+                    <span class="hint"><kbd>E</kbd> export</span>
+                    <span class="hint"><kbd>C</kbd> clear</span>
+                </div>
             </div>
+
             <div class="window drum-space">
+                <div class="window-title">Drum Pad</div>
                 <iframe src="drumpad.html"></iframe>
+                <div class="window-bar">
+                    <span class="hint"><kbd>1</kbd> kick</span>
+                    <span class="hint"><kbd>2</kbd> snare</span>
+                    <span class="hint"><kbd>3</kbd> clap</span>
+                    <span class="hint"><kbd>4</kbd> tom</span>
+                    <span class="hint"><kbd>5</kbd> hi-hat</span>
+                    <span class="hint"><kbd>6</kbd> open hat</span>
+                    <span class="hint"><kbd>7</kbd> cowbell</span>
+                    <span class="hint"><kbd>8</kbd> crash</span>
+                </div>
             </div>
         </div>
     </body>
