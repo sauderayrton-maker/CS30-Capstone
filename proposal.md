@@ -8,12 +8,12 @@ For my CS30 project, I’m building a user-friendly music-making app that lets p
 - Base Sounds  👍
 - Piano Roll Grid Setup❎
 - tracks list ❎
-- clean gui there will be no 90 degree corners exclusively rounded to 20px 👍
+- clean gui there will be no 90 degree corners exclusively rounded to 20px (maybe not 20) 👍
 
 
 ## Nice to Have
-- import/export files
-- diferent time signatures
+- import/export files 👍
+- diferent time signatures 
 - ability to add effects (reverb, distortion etc)
 - light and dark mode
 - more themes maybe
@@ -21,5 +21,5 @@ For my CS30 project, I’m building a user-friendly music-making app that lets p
 - customizable workspace -- app drawer
 - workspace tabs 
 - fancy synths 
-- dice roll tab
-- audio mixer controls
+- dice roll tab 
+- audio mixer controls 👍/2
