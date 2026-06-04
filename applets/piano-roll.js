@@ -63,16 +63,27 @@ class MakeNote {
   display() {
     if (this.noteLength > 0) {
       fill(ACTIVE_COLOR);
+      noStroke();
       rect(this.x, this.y, this.width * this.noteLength, this.height);
+      fill(ACTIVE_BRIGHT);
+      noStroke();
+      rect(this.x, this.y, this.width * this.noteLength, 1);
     }
+  }
+  contains(px, py) {
+    return (
+      px >= this.x &&
+      px <= this.x + this.width * this.noteLength &&
+      py >= this.y &&
+      py <= this.y + this.height
+    );
   }
 }
 
 //----- Setup -----//
 function setup() {
   let renderer = createCanvas(windowWidth, windowHeight);
-  p5Canvas = renderer; // This captures the true p5.Element object
-  createCanvas(windowWidth, windowHeight);
+  p5Canvas = renderer;
   noteH = (height - HEADER_H) / rows;
   noteW = (width - PIANO_W) / COLS;
 }
@@ -83,6 +94,9 @@ function draw() {
   drawHeader();
   drawGrid();
   drawPiano();
+  for (let n of notes) {
+    n.display();
+  }
 }
 
 //----- Header -----//
@@ -172,7 +186,21 @@ function windowResized() {
   noteW = (width - PIANO_W) / COLS;
 }
 
-//ai
+function mousePressed() {
+  if (mouseX < PIANO_W || mouseY < HEADER_H) {
+    return;
+  }
+
+  let snapX = PIANO_W + floor((mouseX - PIANO_W) / noteW) * noteW;
+  let snapY = HEADER_H + floor((mouseY - HEADER_H) / noteH) * noteH;
+
+  let existing = notes.find((n) => n.x === snapX && n.y === snapY);
+  if (existing) {
+    notes = notes.filter((n) => n !== existing);
+  } else {
+    notes.push(new MakeNote(snapX, snapY));
+  }
+}
 
 //----- p5.js Focus / Blur handling -----//
 // https://gemini.google.com/app/dea5b331aef3a90e
