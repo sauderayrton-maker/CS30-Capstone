@@ -18,7 +18,7 @@ const BG = "#0c0a08";
 const PIANO_W = 68;
 const HEADER_H = 36;
 const PAD = 8;
-const OCTAVES = 5;
+const OCTAVES = 3;
 const COLS = 64;
 const HIGHEST = 95;
 
@@ -64,10 +64,19 @@ class MakeNote {
     if (this.noteLength > 0) {
       fill(ACTIVE_COLOR);
       noStroke();
-      rect(this.x, this.y, this.width * this.noteLength, this.height);
+      rect(
+        this.x,
+        this.y,
+        this.width * this.noteLength,
+        this.height,
+        0,
+        0,
+        CORNERRADIUS / 5,
+        CORNERRADIUS / 5,
+      );
       fill(ACTIVE_BRIGHT);
       noStroke();
-      rect(this.x, this.y, this.width * this.noteLength, 1);
+      rect(this.x, this.y, this.width * this.noteLength, 1, CORNERRADIUS / 2);
     }
   }
   contains(px, py) {
