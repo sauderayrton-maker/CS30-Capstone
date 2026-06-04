@@ -1,20 +1,20 @@
 //----- Constants -----//
 const CORNERRADIUS = 8;
-const SURFACE = "#141210";
-const PLAYHEAD_COLOR = "#f5d48a";
-const PLAYHEAD_SHADOW = "rgba(255, 220, 100, 0.05)";
-const ACTIVE_COLOR = "#e8a94a";
-const ACTIVE_BRIGHT = "#f5d48a";
-const ACTIVE_BORDER = "#7a4e18";
-const INACTIVE_NATURAL = "#1e1a14";
-const INACTIVE_SHARP = "#161310";
-const INACTIVE_NATURAL2 = "#1c1814";
-const INACTIVE_SHARP2 = "#131110";
-const INACTIVE_COL_HIGHLIGHT = "#252015";
-const HEADER_TEXT_ACTIVE = "#e8a94a";
-const HEADER_TEXT_INACTIVE = "#2e2820";
-const STROKES = "#1e1a14";
-const BG = "#0c0a08";
+const SURFACE = "#252220";
+const PLAYHEAD_COLOR = "#e6c200";
+const PLAYHEAD_SHADOW = "rgba(230, 194, 0, 0.15)";
+const ACTIVE_COLOR = "#e6c200";
+const ACTIVE_BRIGHT = "#f5e68a";
+const ACTIVE_BORDER = "#a68f00";
+const INACTIVE_NATURAL = "#1a1714";
+const INACTIVE_SHARP = "#131009";
+const INACTIVE_NATURAL2 = "#1e1a15";
+const INACTIVE_SHARP2 = "#161208";
+const INACTIVE_COL_HIGHLIGHT = "#3a3530";
+const HEADER_TEXT_ACTIVE = "#e6c200";
+const HEADER_TEXT_INACTIVE = "#4d4a46";
+const STROKES = "#3a3530";
+const BG = "#0f0d0a";
 const PIANO_W = 68;
 const HEADER_H = 36;
 const PAD = 8;
@@ -69,10 +69,10 @@ class MakeNote {
         this.y,
         this.width * this.noteLength,
         this.height,
-        0,
-        0,
-        CORNERRADIUS / 5,
-        CORNERRADIUS / 5,
+        CORNERRADIUS / 3,
+        CORNERRADIUS / 3,
+        CORNERRADIUS / 3,
+        CORNERRADIUS / 3,
       );
       fill(ACTIVE_BRIGHT);
       noStroke();
@@ -112,7 +112,7 @@ function draw() {
 function drawHeader() {
   noStroke();
   fill(SURFACE);
-  rect(0, 0, width, HEADER_H);
+  rect(0, 0, width, HEADER_H, CORNERRADIUS);
   fill(HEADER_TEXT_ACTIVE);
   textSize(11);
   textAlign(LEFT, CENTER);
@@ -150,7 +150,7 @@ function drawGrid() {
         }
       }
       noStroke();
-      rect(px, py, noteW, noteH);
+      rect(px, py, noteW, noteH, CORNERRADIUS / 4);
     }
   }
 }
@@ -162,14 +162,14 @@ function drawPiano() {
     let isBlack = blackKeys.includes(noteIndex);
     let octave = OCTAVES + 1 - floor(y / 12);
     let py = HEADER_H + y * noteH;
-    fill(isBlack ? "#0e0c0a" : SURFACE);
+    fill(isBlack ? "#141108" : SURFACE);
     stroke(STROKES);
     strokeWeight(0.5);
-    rect(0, py, PIANO_W, noteH);
+    rect(0, py, PIANO_W, noteH, CORNERRADIUS / 4);
     if (isBlack) {
       noStroke();
-      fill("#09090a");
-      rect(0, py, PIANO_W * 0.6, noteH);
+      fill("#0a0908");
+      rect(0, py, PIANO_W * 0.6, noteH, CORNERRADIUS / 5);
     }
     if (noteIndex === 11) {
       fill(ACTIVE_COLOR);
@@ -181,7 +181,7 @@ function drawPiano() {
   }
   noStroke();
   fill(SURFACE);
-  rect(0, 0, PIANO_W, HEADER_H);
+  rect(0, 0, PIANO_W, HEADER_H, CORNERRADIUS / 2);
   stroke(STROKES);
   strokeWeight(1);
   line(PIANO_W, 0, PIANO_W, height);
@@ -203,9 +203,14 @@ function mousePressed() {
   let snapX = PIANO_W + floor((mouseX - PIANO_W) / noteW) * noteW;
   let snapY = HEADER_H + floor((mouseY - HEADER_H) / noteH) * noteH;
 
-  let existing = notes.find((n) => n.x === snapX && n.y === snapY);
+  let existing = notes.find(function (n) {
+    return n.x === snapX && n.y === snapY;
+  });
+
   if (existing) {
-    notes = notes.filter((n) => n !== existing);
+    notes = notes.filter(function (n) {
+      return n !== existing;
+    });
   } else {
     notes.push(new MakeNote(snapX, snapY));
   }
@@ -213,7 +218,7 @@ function mousePressed() {
 
 //----- p5.js Focus / Blur handling -----//
 // https://gemini.google.com/app/dea5b331aef3a90e
-window.addEventListener("blur", () => {
+window.addEventListener("blur", function () {
   if (p5Canvas) {
     p5Canvas.style("filter", "blur(5px) grayscale(20%)");
     p5Canvas.style("transition", "filter 0.3s ease");
@@ -221,7 +226,7 @@ window.addEventListener("blur", () => {
   }
 });
 
-window.addEventListener("focus", () => {
+window.addEventListener("focus", function () {
   if (p5Canvas) {
     p5Canvas.style("filter", "none");
     p5Canvas.style("pointer-events", "auto");

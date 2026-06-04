@@ -1,33 +1,33 @@
 //----- Constants -----//
 //--//  look and feel  //--//
 const CORNERRADIUS = 8;
-const SURFACE = "#141210";
-const PLAYHEAD_COLOR = "#f5d48a";
-const PLAYHEAD_SHADOW = "rgba(255, 220, 100, 0.05)";
-const INACTIVE_DRUM_COLOR = "#1e1a14";
-const INACTIVE_DRUM_ALT = "#1a1710";
-const INACTIVE_COLUMN_HIGHLIGHT = "#252015";
-const HEADER_TEXT_ACTIVE = "#e8a94a";
-const HEADER_TEXT_INACTIVE = "#2e2820";
-const ACTIVE_NOTE_COLOR = "#e8a94a";
-const ACTIVE_NOTE_BRIGHT = "#f5d48a";
-const BG = "#0c0a08";
-const COLOR_KICK = "#e8a94a";
-const COLOR_SNARE = "#e8704a";
-const COLOR_CLAP = "#e8c44a";
-const COLOR_TOM = "#e84a7a";
-const COLOR_HHCL = "#a4e84a";
-const COLOR_HHOP = "#4ae8a4";
-const COLOR_COWBELL = "#4ab4e8";
-const COLOR_CRASH = "#b44ae8";
-const BORDER_KICK = "#3d2a0a";
-const BORDER_SNARE = "#3d1a0a";
-const BORDER_CLAP = "#3d320a";
-const BORDER_TOM = "#3d0a1e";
-const BORDER_HHCL = "#283d0a";
-const BORDER_HHOP = "#0a3d28";
-const BORDER_COWBELL = "#0a2c3d";
-const BORDER_CRASH = "#2c0a3d";
+const SURFACE = "#252220";
+const PLAYHEAD_COLOR = "#e6c200";
+const PLAYHEAD_SHADOW = "rgba(230, 194, 0, 0.15)";
+const INACTIVE_DRUM_COLOR = "#1a1714";
+const INACTIVE_DRUM_ALT = "#161208";
+const INACTIVE_COLUMN_HIGHLIGHT = "#3a3530";
+const HEADER_TEXT_ACTIVE = "#e6c200";
+const HEADER_TEXT_INACTIVE = "#4d4a46";
+const ACTIVE_NOTE_COLOR = "#e6c200";
+const ACTIVE_NOTE_BRIGHT = "#f5e68a";
+const BG = "#0f0d0a";
+const COLOR_KICK = "#e6c200";
+const COLOR_SNARE = "#d4a573";
+const COLOR_CLAP = "#e6d960";
+const COLOR_TOM = "#d47a8f";
+const COLOR_HHCL = "#a8d46b";
+const COLOR_HHOP = "#6ad4a4";
+const COLOR_COWBELL = "#6ac4e6";
+const COLOR_CRASH = "#b96ae6";
+const BORDER_KICK = "#5a4a1a";
+const BORDER_SNARE = "#5a3a1a";
+const BORDER_CLAP = "#5a4a1a";
+const BORDER_TOM = "#5a1a2e";
+const BORDER_HHCL = "#3a5a1a";
+const BORDER_HHOP = "#1a5a38";
+const BORDER_COWBELL = "#1a3a5a";
+const BORDER_CRASH = "#3a1a5a";
 const LABEL_W = 88;
 const HEADER_H = 36;
 const PAD = 8;
@@ -171,7 +171,7 @@ function lightColumn(col) {
 function drawHeader() {
   noStroke();
   fill(SURFACE);
-  rect(0, 0, width, HEADER_H);
+  rect(0, 0, width, HEADER_H, CORNERRADIUS);
   fill(HEADER_TEXT_ACTIVE);
   textSize(11);
   textAlign(LEFT, CENTER);
@@ -199,7 +199,7 @@ function drawLabels() {
     fill(SURFACE);
     rect(PAD, py, LABEL_W - PAD * 2, noteH, CORNERRADIUS);
     fill(colors[y]);
-    rect(PAD, py, 3, noteH, CORNERRADIUS, 0, 0, CORNERRADIUS);
+    rect(PAD, py, 3, noteH, CORNERRADIUS / 2, 0, 0, CORNERRADIUS / 2);
     fill(colors[y]);
     textSize(9);
     textAlign(LEFT, CENTER);
@@ -231,7 +231,7 @@ function drawDrumPad() {
       } else {
         noStroke();
       }
-      rect(px, py, noteW, noteH, CORNERRADIUS);
+      rect(px, py, noteW, noteH, CORNERRADIUS / 2);
     }
   }
 }
@@ -241,7 +241,7 @@ function drawPlayhead() {
   let px = getNoteX(currentNote);
   noStroke();
   fill(PLAYHEAD_SHADOW);
-  rect(px, HEADER_H, noteW, height - HEADER_H);
+  rect(px, HEADER_H, noteW, height - HEADER_H, CORNERRADIUS / 4);
   fill(PLAYHEAD_COLOR);
   triangle(
     px,
@@ -390,7 +390,7 @@ function exportSound() {
 
 //----- p5.js Focus / Blur handling -----//
 // https://gemini.google.com/app/dea5b331aef3a90e
-window.addEventListener("blur", () => {
+window.addEventListener("blur", function () {
   if (p5Canvas) {
     p5Canvas.style("filter", "blur(5px) grayscale(20%)");
     p5Canvas.style("transition", "filter 0.3s ease");
@@ -398,7 +398,7 @@ window.addEventListener("blur", () => {
   }
 });
 
-window.addEventListener("focus", () => {
+window.addEventListener("focus", function () {
   if (p5Canvas) {
     p5Canvas.style("filter", "none");
     p5Canvas.style("pointer-events", "auto");
