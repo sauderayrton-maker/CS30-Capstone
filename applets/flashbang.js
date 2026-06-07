@@ -2,6 +2,7 @@ let brightness = 255;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  textFont("opensans");
 }
 
 function draw() {
