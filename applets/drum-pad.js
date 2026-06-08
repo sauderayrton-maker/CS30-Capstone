@@ -32,7 +32,7 @@ const LABEL_W = 88;
 const HEADER_H = 36;
 const PAD = 8;
 const GAP = 4;
-const BEAT_GAP = 10;
+const BEAT_GAP = 10; // bigger gap every 4 steps
 
 //--//  State  //--//
 const ACTIVE_NOTE = 1;
@@ -131,7 +131,7 @@ function draw() {
 
 //----- Timing -----//
 function start() {
-  let interval = ((60 / bpm) * 1000) / 4;
+  let interval = ((60 / bpm) * 1000) / 4; // ms per 16th note
   if (millis() >= nextNote) {
     lightColumn(currentNote);
     currentNote = (currentNote + 1) % cols;
@@ -182,7 +182,7 @@ function drawHeader() {
     if (x % 4 === 0) {
       fill(HEADER_TEXT_ACTIVE);
       textSize(11);
-      text(floor(x / 4) + 1, px, HEADER_H / 2);
+      text(floor(x / 4) + 1, px, HEADER_H / 2); // beat number
     } else {
       fill(HEADER_TEXT_INACTIVE);
       textSize(9);
@@ -199,7 +199,7 @@ function drawLabels() {
     fill(SURFACE);
     rect(PAD, py, LABEL_W - PAD * 2, noteH, CORNERRADIUS);
     fill(colors[y]);
-    rect(PAD, py, 3, noteH, CORNERRADIUS / 2, 0, 0, CORNERRADIUS / 2);
+    rect(PAD, py, 3, noteH, CORNERRADIUS / 2, 0, 0, CORNERRADIUS / 2); // color stripe
     fill(colors[y]);
     textSize(9);
     textAlign(LEFT, CENTER);
@@ -214,13 +214,13 @@ function drawDrumPad() {
       let px = getNoteX(x);
       let py = getNoteY(y);
       if (isPlaying && x === currentNote && beatsArray[y][x] === ACTIVE_NOTE) {
-        fill(ACTIVE_NOTE_BRIGHT);
+        fill(ACTIVE_NOTE_BRIGHT); // active + playing = flash
       } else if (isPlaying && x === currentNote) {
         fill(INACTIVE_COLUMN_HIGHLIGHT);
       } else if (beatsArray[y][x] === ACTIVE_NOTE) {
         fill(colors[y]);
       } else {
-        fill(floor(x / 4) % 2 === 0 ? INACTIVE_DRUM_COLOR : INACTIVE_DRUM_ALT);
+        fill(floor(x / 4) % 2 === 0 ? INACTIVE_DRUM_COLOR : INACTIVE_DRUM_ALT); // alternating shades per beat group
       }
       if (
         beatsArray[y][x] === ACTIVE_NOTE &&
@@ -255,7 +255,7 @@ function drawPlayhead() {
 
 //----- Note Position Helpers -----//
 function getNoteX(x) {
-  return LABEL_W + PAD + x * (noteW + GAP) + floor(x / 4) * (BEAT_GAP - GAP);
+  return LABEL_W + PAD + x * (noteW + GAP) + floor(x / 4) * (BEAT_GAP - GAP); // accounts for beat gaps
 }
 
 function getNoteY(y) {

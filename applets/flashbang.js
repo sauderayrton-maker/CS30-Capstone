@@ -1,4 +1,4 @@
-let brightness = 255;
+let brightness = 255; // starts blinding white
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -13,8 +13,8 @@ function draw() {
 
 function changeColor() {
   if (brightness > 0) {
-    brightness -= 0.5;
-    console.log(brightness);
+    brightness -= 0.5; // slowly fade to black
+    console.log(brightness); // unnecessary but here we are
   }
 }
 
