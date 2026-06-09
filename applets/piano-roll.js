@@ -382,6 +382,83 @@ function keyPressed() {
   }
 }
 
+//----- Presets ai slop -----//
+const PRESETS = {
+  girlsWantGirls: {
+    bpm: 140,
+    notes: [
+      { col: 0, row: 5, noteLength: 2 }, // F#4
+      { col: 2, row: 7, noteLength: 1 }, // E4
+      { col: 3, row: 9, noteLength: 1 }, // D4
+      { col: 4, row: 5, noteLength: 2 }, // F#4
+      { col: 6, row: 7, noteLength: 1 }, // E4
+      { col: 7, row: 9, noteLength: 1 }, // D4
+      { col: 8, row: 7, noteLength: 2 }, // E4
+      { col: 10, row: 9, noteLength: 1 }, // D4
+      { col: 11, row: 12, noteLength: 1 }, // B3
+      { col: 12, row: 9, noteLength: 2 }, // D4
+      { col: 14, row: 12, noteLength: 2 }, // B3
+      { col: 16, row: 4, noteLength: 2 }, // G4
+      { col: 18, row: 5, noteLength: 1 }, // F#4
+      { col: 19, row: 7, noteLength: 1 }, // E4
+      { col: 20, row: 9, noteLength: 2 }, // D4
+      { col: 22, row: 12, noteLength: 2 }, // B3
+      { col: 24, row: 9, noteLength: 2 }, // D4
+      { col: 26, row: 12, noteLength: 2 }, // B3
+      { col: 28, row: 9, noteLength: 4 }, // D4 (held)
+      { col: 32, row: 2, noteLength: 2 }, // A4 (peak)
+      { col: 34, row: 5, noteLength: 2 }, // F#4
+      { col: 36, row: 7, noteLength: 1 }, // E4
+      { col: 37, row: 9, noteLength: 1 }, // D4
+      { col: 38, row: 5, noteLength: 2 }, // F#4
+      { col: 40, row: 7, noteLength: 2 }, // E4
+      { col: 42, row: 9, noteLength: 2 }, // D4
+      { col: 44, row: 5, noteLength: 2 }, // F#4
+      { col: 46, row: 7, noteLength: 2 }, // E4
+      { col: 48, row: 7, noteLength: 3 }, // E4
+      { col: 52, row: 10, noteLength: 2 }, // C#4
+      { col: 54, row: 14, noteLength: 2 }, // A3
+      { col: 56, row: 12, noteLength: 2 }, // B3
+      { col: 58, row: 14, noteLength: 2 }, // A3
+      { col: 60, row: 10, noteLength: 2 }, // C#4
+      { col: 62, row: 7, noteLength: 2 }, // E4
+      { col: 0, row: 17, noteLength: 8 }, // F#3
+      { col: 0, row: 21, noteLength: 8 }, // D3
+      { col: 8, row: 17, noteLength: 8 }, // F#3
+      { col: 8, row: 21, noteLength: 8 }, // D3
+      { col: 16, row: 16, noteLength: 8 }, // G3
+      { col: 16, row: 21, noteLength: 8 }, // D3
+      { col: 24, row: 16, noteLength: 8 }, // G3
+      { col: 24, row: 21, noteLength: 8 }, // D3
+      { col: 32, row: 17, noteLength: 8 }, // F#3
+      { col: 32, row: 21, noteLength: 8 }, // D3
+      { col: 40, row: 17, noteLength: 8 }, // F#3
+      { col: 40, row: 21, noteLength: 8 }, // D3
+      { col: 48, row: 19, noteLength: 8 }, // E3
+      { col: 48, row: 22, noteLength: 8 }, // C#3
+      { col: 56, row: 19, noteLength: 8 }, // E3
+      { col: 56, row: 22, noteLength: 8 }, // C#3
+      { col: 0, row: 24, noteLength: 16 }, // B2
+      { col: 16, row: 28, noteLength: 16 }, // G2
+      { col: 32, row: 33, noteLength: 16 }, // D2
+      { col: 48, row: 26, noteLength: 16 }, // A2
+    ],
+  },
+};
+
+function loadPreset(name) {
+  let preset = PRESETS[name];
+  if (!preset) return;
+  bpm = preset.bpm;
+  notes = preset.notes.map(function (d) {
+    let px = PIANO_W + d.col * noteW;
+    let py = HEADER_H + d.row * noteH;
+    let n = new MakeNote(px, py);
+    n.noteLength = d.noteLength;
+    return n;
+  });
+}
+
 //----- Save / Load -----//
 function saveGrid() {
   let data = notes.map(function (n) {
