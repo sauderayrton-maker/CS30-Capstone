@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
+        <script>if (!sessionStorage.getItem("flux_auth")) window.location.replace("login.html");</script>
         <title>Flux</title>
         <script src="https://cdn.jsdelivr.net/npm/p5@1.11.13/lib/p5.js"></script>
         <link rel="stylesheet" type="text/css" href="style.css" />
@@ -38,8 +39,8 @@
                     </div>
                 </div>
                 <div class="window mixer-space">
-                    <div class="window-title">Mixer</div>
-                    <iframe src="mixer.html"></iframe>
+                    <div class="window-title">Playlist</div>
+                    <iframe src="playlist.html"></iframe>
                 </div>
             </div>
             <div class="window drum-space">
