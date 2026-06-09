@@ -76,7 +76,7 @@ function buildForm() {
   passInput.attribute("placeholder", "PASSWORD");
   styleInput(passInput, formLeft(), centerY() + 30, formWidth());
 
-  loginBtn = createButton("INITIALIZE SESSION");
+  loginBtn = createButton("login");
   loginBtn.position(formLeft(), centerY() + 125);
   loginBtn.size(formWidth(), 46);
   loginBtn.style("background", "rgba(30, 25, 15, 0.9)");
