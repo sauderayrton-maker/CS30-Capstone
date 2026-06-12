@@ -131,7 +131,7 @@ function draw() {
 
 //----- Timing -----//
 function start() {
-  let interval = ((60 / bpm) * 1000) / 4; // ms per 16th note
+  let interval = 60 / bpm * 1000 / 4; // ms per 16th note
   if (millis() >= nextNote) {
     lightColumn(currentNote);
     currentNote = (currentNote + 1) % cols;
@@ -183,7 +183,8 @@ function drawHeader() {
       fill(HEADER_TEXT_ACTIVE);
       textSize(11);
       text(floor(x / 4) + 1, px, HEADER_H / 2); // beat number
-    } else {
+    } 
+    else {
       fill(HEADER_TEXT_INACTIVE);
       textSize(9);
       text(x + 1, px, HEADER_H / 2);
@@ -215,11 +216,14 @@ function drawDrumPad() {
       let py = getNoteY(y);
       if (isPlaying && x === currentNote && beatsArray[y][x] === ACTIVE_NOTE) {
         fill(ACTIVE_NOTE_BRIGHT); // active + playing = flash
-      } else if (isPlaying && x === currentNote) {
+      } 
+      else if (isPlaying && x === currentNote) {
         fill(INACTIVE_COLUMN_HIGHLIGHT);
-      } else if (beatsArray[y][x] === ACTIVE_NOTE) {
+      } 
+      else if (beatsArray[y][x] === ACTIVE_NOTE) {
         fill(colors[y]);
-      } else {
+      } 
+      else {
         fill(floor(x / 4) % 2 === 0 ? INACTIVE_DRUM_COLOR : INACTIVE_DRUM_ALT); // alternating shades per beat group
       }
       if (
@@ -228,7 +232,8 @@ function drawDrumPad() {
       ) {
         stroke(borders[y]);
         strokeWeight(1);
-      } else {
+      } 
+      else {
         noStroke();
       }
       rect(px, py, noteW, noteH, CORNERRADIUS / 2);
@@ -377,7 +382,8 @@ function exportSound() {
     nextNote = millis();
     recorder.record(theFile);
     isRecording = true;
-  } else {
+  } 
+  else {
     recorder.stop();
     isPlaying = false;
     isRecording = false;
@@ -386,7 +392,7 @@ function exportSound() {
   }
 }
 
-//ai
+// ---- ai slop ----- //
 
 //----- p5.js Focus / Blur handling -----//
 // https://gemini.google.com/app/dea5b331aef3a90e
@@ -404,4 +410,4 @@ window.addEventListener("focus", function () {
     p5Canvas.style("pointer-events", "auto");
   }
 });
-// Drum Pad done!!! for now ;)
+// Drum Pad done!!!

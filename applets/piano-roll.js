@@ -1,4 +1,5 @@
 //----- Constants -----//
+//--//  look and feel  //--//
 const CORNERRADIUS = 8;
 const SURFACE = "#252220";
 const PLAYHEAD_COLOR = "#e6c200";
@@ -15,6 +16,8 @@ const HEADER_TEXT_ACTIVE = "#e6c200";
 const HEADER_TEXT_INACTIVE = "#4d4a46";
 const STROKES = "#3a3530";
 const BG = "#0f0d0a";
+
+//--//  layout  //--//
 const PIANO_W = 68;
 const HEADER_H = 36;
 const PAD = 8;
@@ -23,7 +26,8 @@ const COLS = 64;
 const HIGHEST = 95;
 const GRAB = 10; // px from the right edge that counts as a drag handle
 
-//----- Notes Setup -----//
+//----- Variables -----//
+//--//  notes setup  //--//
 let noteNames = [
   "B",
   "Bb",
@@ -41,7 +45,7 @@ let noteNames = [
 let blackKeys = [1, 3, 5, 8, 10]; // which rows in each octave are black keys
 let waves = ["sine", "triangle", "square", "sawtooth"];
 
-//----- Variables -----//
+//--//  General  //--//
 let rows = OCTAVES * 12;
 let noteW, noteH;
 let notes = [];
@@ -58,6 +62,7 @@ let isRecording = false;
 let grabbed = null;
 let grabX = 0;
 
+//----- Note Class -----//
 class MakeNote {
   constructor(x, y) {
     this.x = x;
@@ -116,7 +121,7 @@ function setup() {
   recorder.setInput();
 }
 
-//----- Draw  -----//
+//----- Draw -----//
 function draw() {
   background(BG);
   drawHeader();
@@ -149,10 +154,11 @@ function drawHeader() {
       fill(HEADER_TEXT_ACTIVE);
       textSize(11);
       text(floor(x / 16) + 1, px, HEADER_H / 2); // bar number
-    } else if (x % 4 === 0) {
+    } 
+    else if (x % 4 === 0) {
       fill(HEADER_TEXT_INACTIVE);
       textSize(9);
-      text((floor(x / 4) % 4) + 1, px, HEADER_H / 2); // beat number within bar
+      text(floor(x / 4 % 4) + 1, px, HEADER_H / 2); // beat number within bar
     }
   }
 }
@@ -166,11 +172,13 @@ function drawGrid() {
       let py = HEADER_H + y * noteH;
       if (isPlaying && x === beat) {
         fill(INACTIVE_COL_HIGHLIGHT);
-      } else {
+      } 
+      else {
         let evenGroup = floor(x / 4) % 2 === 0; // alternate shade every 4 columns
         if (isSharp) {
           fill(evenGroup ? INACTIVE_SHARP : INACTIVE_SHARP2);
-        } else {
+        } 
+        else {
           fill(evenGroup ? INACTIVE_NATURAL : INACTIVE_NATURAL2);
         }
       }
@@ -237,7 +245,7 @@ function drawPlayhead() {
 
 //----- Tick -----//
 function tick() {
-  let interval = ((60 / bpm) * 1000) / 4; // ms per 16th note
+  let interval = 60 / bpm * 1000 / 4; // ms per 16th note
   if (millis() >= nextTick) {
     hitCol(beat);
     beat = (beat + 1) % COLS;
@@ -382,83 +390,6 @@ function keyPressed() {
   }
 }
 
-//----- Presets ai slop -----//
-const PRESETS = {
-  girlsWantGirls: {
-    bpm: 140,
-    notes: [
-      { col: 0, row: 5, noteLength: 2 }, // F#4
-      { col: 2, row: 7, noteLength: 1 }, // E4
-      { col: 3, row: 9, noteLength: 1 }, // D4
-      { col: 4, row: 5, noteLength: 2 }, // F#4
-      { col: 6, row: 7, noteLength: 1 }, // E4
-      { col: 7, row: 9, noteLength: 1 }, // D4
-      { col: 8, row: 7, noteLength: 2 }, // E4
-      { col: 10, row: 9, noteLength: 1 }, // D4
-      { col: 11, row: 12, noteLength: 1 }, // B3
-      { col: 12, row: 9, noteLength: 2 }, // D4
-      { col: 14, row: 12, noteLength: 2 }, // B3
-      { col: 16, row: 4, noteLength: 2 }, // G4
-      { col: 18, row: 5, noteLength: 1 }, // F#4
-      { col: 19, row: 7, noteLength: 1 }, // E4
-      { col: 20, row: 9, noteLength: 2 }, // D4
-      { col: 22, row: 12, noteLength: 2 }, // B3
-      { col: 24, row: 9, noteLength: 2 }, // D4
-      { col: 26, row: 12, noteLength: 2 }, // B3
-      { col: 28, row: 9, noteLength: 4 }, // D4 (held)
-      { col: 32, row: 2, noteLength: 2 }, // A4 (peak)
-      { col: 34, row: 5, noteLength: 2 }, // F#4
-      { col: 36, row: 7, noteLength: 1 }, // E4
-      { col: 37, row: 9, noteLength: 1 }, // D4
-      { col: 38, row: 5, noteLength: 2 }, // F#4
-      { col: 40, row: 7, noteLength: 2 }, // E4
-      { col: 42, row: 9, noteLength: 2 }, // D4
-      { col: 44, row: 5, noteLength: 2 }, // F#4
-      { col: 46, row: 7, noteLength: 2 }, // E4
-      { col: 48, row: 7, noteLength: 3 }, // E4
-      { col: 52, row: 10, noteLength: 2 }, // C#4
-      { col: 54, row: 14, noteLength: 2 }, // A3
-      { col: 56, row: 12, noteLength: 2 }, // B3
-      { col: 58, row: 14, noteLength: 2 }, // A3
-      { col: 60, row: 10, noteLength: 2 }, // C#4
-      { col: 62, row: 7, noteLength: 2 }, // E4
-      { col: 0, row: 17, noteLength: 8 }, // F#3
-      { col: 0, row: 21, noteLength: 8 }, // D3
-      { col: 8, row: 17, noteLength: 8 }, // F#3
-      { col: 8, row: 21, noteLength: 8 }, // D3
-      { col: 16, row: 16, noteLength: 8 }, // G3
-      { col: 16, row: 21, noteLength: 8 }, // D3
-      { col: 24, row: 16, noteLength: 8 }, // G3
-      { col: 24, row: 21, noteLength: 8 }, // D3
-      { col: 32, row: 17, noteLength: 8 }, // F#3
-      { col: 32, row: 21, noteLength: 8 }, // D3
-      { col: 40, row: 17, noteLength: 8 }, // F#3
-      { col: 40, row: 21, noteLength: 8 }, // D3
-      { col: 48, row: 19, noteLength: 8 }, // E3
-      { col: 48, row: 22, noteLength: 8 }, // C#3
-      { col: 56, row: 19, noteLength: 8 }, // E3
-      { col: 56, row: 22, noteLength: 8 }, // C#3
-      { col: 0, row: 24, noteLength: 16 }, // B2
-      { col: 16, row: 28, noteLength: 16 }, // G2
-      { col: 32, row: 33, noteLength: 16 }, // D2
-      { col: 48, row: 26, noteLength: 16 }, // A2
-    ],
-  },
-};
-
-function loadPreset(name) {
-  let preset = PRESETS[name];
-  if (!preset) return;
-  bpm = preset.bpm;
-  notes = preset.notes.map(function (d) {
-    let px = PIANO_W + d.col * noteW;
-    let py = HEADER_H + d.row * noteH;
-    let n = new MakeNote(px, py);
-    n.noteLength = d.noteLength;
-    return n;
-  });
-}
-
 //----- Save / Load -----//
 function saveGrid() {
   let data = notes.map(function (n) {
@@ -488,7 +419,8 @@ function exportSound() {
     nextTick = millis();
     recorder.record(theFile);
     isRecording = true;
-  } else {
+  } 
+  else {
     recorder.stop();
     isPlaying = false;
     isRecording = false;

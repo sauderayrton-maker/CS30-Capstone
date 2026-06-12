@@ -1,3 +1,5 @@
+//----- Constants -----//
+//--//  look and feel  //--//
 const BACKGROUND = "#0f0d0a";
 const TILE_DARK = "#1a1714";
 const TILE_DARKER = "#161208";
@@ -15,16 +17,22 @@ const COLORS = [
   "#b96ae6",
 ];
 
+//----- Variables -----//
+//--//  form elements  //--//
 let userInput, passInput, loginBtn, createBtn, logoImg, canvas;
+
+//--//  background grid  //--//
 let tiles = [],
   tileSize = 50,
   cols,
   rows;
 
+//--//  Preloads  //--//
 function preload() {
   logoImg = loadImage("logoround.png");
 }
 
+//----- Setup -----//
 function setup() {
   canvas = createCanvas(windowWidth, windowHeight);
   textFont("Open Sans");
@@ -32,6 +40,7 @@ function setup() {
   buildForm();
 }
 
+//----- Making it happen -----//
 function draw() {
   background(BACKGROUND);
   rectMode(CORNER);
@@ -43,6 +52,7 @@ function draw() {
   drawLogo();
 }
 
+//----- Layout Helpers -----//
 function panelWidth() {
   return floor(width / 3 / tileSize) * tileSize;
 }
@@ -56,6 +66,7 @@ function centerY() {
   return height / 2;
 }
 
+//----- Grid -----//
 function buildGrid() {
   tiles = [];
   cols = ceil(width / tileSize);
@@ -67,6 +78,7 @@ function buildGrid() {
   }
 }
 
+//----- Form -----//
 function buildForm() {
   userInput = createInput("");
   userInput.attribute("placeholder", "USERNAME");
@@ -104,6 +116,7 @@ function buildForm() {
   createBtn.mousePressed(createUser);
 }
 
+//----- Button States -----//
 function setButtonActive() {
   loginBtn.style("background", GOLD);
   loginBtn.style("color", BACKGROUND);
@@ -114,6 +127,7 @@ function setButtonInactive() {
   loginBtn.style("color", GOLD);
 }
 
+//----- Input Styling -----//
 function styleInput(input, x, y, w) {
   input.position(x, y);
   input.size(w, 20);
@@ -124,6 +138,7 @@ function styleInput(input, x, y, w) {
   input.style("color", GOLD);
 }
 
+//----- Panel Shape -----//
 function drawPanelShape() {
   let right = panelWidth();
   let stepSize = tileSize * 4;
@@ -157,7 +172,7 @@ function getEdgePoints() {
   return points;
 }
 
-// ---- makes pannel ----- //
+//----- Panel -----//
 function drawPanel() {
   noStroke();
   fill(15, 12, 10, 240);
@@ -168,6 +183,7 @@ function drawPanel() {
   text("PASSWORD", 40, centerY() + 25);
 }
 
+//----- Logo -----//
 function drawLogo() {
   if (!logoImg) {
     return;
@@ -182,6 +198,7 @@ function drawLogo() {
   );
 }
 
+//----- Tile Class -----//
 class Tile {
   constructor(x, y, col) {
     this.x = x;
@@ -197,7 +214,8 @@ class Tile {
     let d = dist(mouseX, mouseY, this.x + tileSize / 2, this.y + tileSize / 2);
     if (d < 100) {
       this.charge = map(d, 0, 100, 1, 0);
-    } else {
+    } 
+    else {
       this.charge = max(0, this.charge - 0.04);
     }
     this.currentColor = lerpColor(this.baseColor, this.glowColor, this.charge);
@@ -210,6 +228,7 @@ class Tile {
   }
 }
 
+//----- Auth -----//
 function login() {
   let user = userInput.value().trim();
   let pass = passInput.value();
@@ -231,6 +250,7 @@ function createUser() {
   localStorage.setItem("flux_users", JSON.stringify(users));
 }
 
+//----- Resize -----//
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
   buildGrid();

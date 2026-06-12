@@ -1,3 +1,5 @@
+//----- Constants -----//
+//--//  look and feel  //--//
 const BACKGROUND = "#0f0d0a";
 const TILE_DARK = "#1a1714";
 const TILE_DARKER = "#161208";
@@ -12,18 +14,21 @@ const COLORS = [
   "#b96ae6",
 ];
 
+//----- Variables -----//
 let brightness = 255;
 let tiles = [],
   tileSize = 50,
   cols,
   rows;
 
+//----- Setup -----//
 function setup() {
   createCanvas(windowWidth, windowHeight);
   textFont("Open Sans");
   buildGrid();
 }
 
+//----- Making it happen -----//
 function draw() {
   background(BACKGROUND);
   for (let t of tiles) {
@@ -34,6 +39,7 @@ function draw() {
   changeColor();
 }
 
+//----- Grid -----//
 function buildGrid() {
   tiles = [];
   cols = ceil(width / tileSize);
@@ -45,12 +51,14 @@ function buildGrid() {
   }
 }
 
+//----- Fade Out -----//
 function changeColor() {
   if (brightness > 0) {
     brightness -= 0.5;
   }
 }
 
+//----- Text -----//
 function words() {
   noStroke();
   textAlign(CENTER, CENTER);
@@ -62,6 +70,7 @@ function words() {
   text(" click to go back.", width / 2, height / 2 + 30);
 }
 
+//----- Tile Class -----//
 class Tile {
   constructor(x, y, col) {
     this.x = x;
@@ -76,7 +85,8 @@ class Tile {
     let d = dist(mouseX, mouseY, this.x + tileSize / 2, this.y + tileSize / 2);
     if (d < 100) {
       this.charge = map(d, 0, 100, 1, 0);
-    } else {
+    } 
+    else {
       this.charge = max(0, this.charge - 0.04);
     }
   }
@@ -90,10 +100,12 @@ class Tile {
   }
 }
 
+//----- Mouse Handler -----//
 function mousePressed() {
   history.back();
 }
 
+//----- Resize -----//
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
   buildGrid();
