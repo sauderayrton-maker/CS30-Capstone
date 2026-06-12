@@ -6,8 +6,8 @@ For my CS30 project, I’m building a user-friendly music-making app that lets p
 - Local Stoage to pick up where left off👍
 - drum pad 👍
 - Base Sounds  👍
-- Piano Roll Grid Setup❎
-- tracks list ❎
+- Piano Roll Grid Setup 👍
+- tracks list ❎ // never got to
 - clean gui there will be no 90 degree corners exclusively rounded to 20px (maybe not 20) 👍
 
 
@@ -15,11 +15,11 @@ For my CS30 project, I’m building a user-friendly music-making app that lets p
 - import/export files 👍
 - diferent time signatures 
 - ability to add effects (reverb, distortion etc)
-- light and dark mode
-- more themes maybe
-- customzable keyboard shortcuts
+- light and dark mode 👍
+- more themes maybe 
+- customzable keyboard shortcuts (50/50) (can do just alot of work)
 - customizable workspace -- app drawer
 - workspace tabs 
-- fancy synths 
+- fancy synths 👍
 - dice roll tab 
 - audio mixer controls 👍/2
